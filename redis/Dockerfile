@@ -2,7 +2,7 @@
 FROM        ubuntu
 
 # File Author / Maintainer
-MAINTAINER Anand Mani Sankar
+MAINTAINER Waleed Samy <waleed_samy@ymail.com>
 
 # Update the repository and install Redis Server
 RUN         apt-get update && apt-get install -y redis-server

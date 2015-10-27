@@ -1,0 +1,35 @@
+sudo: required
+
+services:
+  - docker
+  
+branches:
+  only:
+    - master
+    
+language: node_js
+
+node_js:
+  - 0.12
+  
+before_install:
+  - docker -v
+  - sudo rm /usr/local/bin/docker-compose
+  - 'curl -L https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s`-`uname -m` > docker-compose'
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  
+install:
+  - docker-compose run -d --no-deps node1
+  - cd node; npm install; mocha; docker build -t ${DOCKER_USER}/dockerworkflow_node1 .
+  
+after_success:
+  - 'docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}'
+  - docker images
+  - docker push ${DOCKER_USER}/dockerworkflow_node1
+  
+env:
+  global:
+    - secure: rpLpRA8UtN6LkwskJqvxBszvJeOro93KxoCs+m2HNfoHZz0Obu2KeP2kheeVIIvtuxknKPB8T5K0OE5TjFjWHPaBm/nJlOS2wQupuGeBrHQOcflrD1EfTFC6HLZCTpovLvnu7dMZQo2exDrPcHF0xeEETlYYfwh7q02dYBBCpMecp+O9P6LUL6E0WRh7+lKRKDhUsiqTuHS6gMNeJnDXdJ0/GWp5+df7U9CyXvStY3S51IHruiuonw3mE3WZylYfZxzk+xv+JVt4lhJyE5poI6pNoBnUx0at+kmOMLiMjjz/PPoB7yVE+j+FusXoX580r26hfNIQpNyiE4Kqs5cL7GFU8jLSf4OFqzK1ljIjsqu3wypWww29tLYzfDWSM955o4+jke35ISlYTFNqJaVLM9/ih9XIvtlnJ2r855bUXUvgx44Swi/FUvR0+azdF+Oe37CikpSlWHBHDT/jclvcmNzyOdLePJ83i4aziBCDFe67Nx9OeBvYaacHWq0MSL4EiPprRi7FYecrWYr4j2Uziof/nA2mhncg785+NOIyjThfKAFl0dy9lia42B1YZw8zEcv6HHzxluC/8MI4zc4wwcoLF9G+oCO8J8K4zgaN00fha/z4F2+huDOiNSR9fUdgpdd7+Mi0/3yPQdu/q11WufWg5pFfwHBsQDKQWz+TPr4=
+    - secure: WT3rGw7D3Bvg/b6LC5C0CaGdFC1TBoEGvA33hoUrUL5b3Q1mdyrYhE9RSN2UPyXf93iokfv25oV/fUFbGFPf69E7nJvYkHlVHPxQ6WdX9wa5uicAJP24Jmld+a7PxWUqB4pd2CffoFZwX0OCXl/GOlzROl12OVk77X1tZ8RXiiYzfZIAM96Tmra9wBvMVBhzCJNh9XLHuxHnJHPyYt2aT+XeP/ASfRFVyOHc168snefKOOY6S1Po6SYXOfQ7uZjFkSS9BCEV5eA+/9UP6Xv/NV59hLj50P4+b4pNlO955O+0Fpz5V4RI/8TT8h2lz2TbPlh71MitFLkKRcM1rN2tv0oBjdb7Pne2kSsZHxtUZEyNwIkhY+wSdAwQvIhPqmxYgMWNlK/Zet2SyxuhOnFtQPx1k0Q5yF6SDHQnXxEDEmP1Lm0vmm3rPLICNd2JI301YmsKCqJUIrDnqqjEhoHhnK1wrJdXZuKgK6M+/Lyqgs2MT4coKhgGd8MSo712h6qIkPp7g1mQSDdx/OdbLWNJoK2If1Hbaj7JScgwrEMUPJn1Gx4qiBUnOvnFWeXCzBo1YhMn5LCbhsqTqabzXQsquR8dGacw42kqiOyVITXjSQj7ICoLV1BxDZNNn2fPQR1+te5GRal/qf4juOD2IcdWUfHnzTIkgT0lvI/oovBycq8=
+    - secure: Gu11BECT525uV3FYFy0BhyAM4noSsySMyhM7F8Yq6yMph9M/tgeEs/vWJ4pkAV4HgGTg3GkoTDWoadI/SAqT90FKCtfsk5MF77ov2gQkSRbD7s2mde0T9CUt/eWIYy+hzbjd9YM0qDfEVgPexNjmm2yRPDnfbi2qKtH/H8DxdnR/uFJQE6s/Uq0D2tHkX/VssnghFh6Xb2zO96zFzoTrzhC4VamWLSRl3sO72oRgzsCct/kvZEMQ4r44I1fuPbesOFXnPHcKc+fVCzO0aT4hrpETIk49F+R6+c9VYxPZ+G7rlSepyxOfcIOYY05D6oT1IZN5PdKznonPJ4DDWGAcxnR9BEZjGOnTE4r6jXEg7jQGrJhQul9ZkrCm58uJj4sWXE289I9dsfXlE695YQqYWPRzmPSigZelCax2gTClirBR/vTK8aMEbBS6ilBDhK3DvWl8X0hrKkkPt0OH3Lr0ApjCgVMOghC7Uu6MeHfS89u01xsW+i5xFuCAGO955VjA1gPk/M/phN2DA8rvX9RrdUwdkJNGurPar0WutxZJ/9QJxR9Nr1tek/JUSH+XEyGouN0vqwCIagte9N0a+nM4lU6WqVCtGC8FUle+qnJ4XTjLUZo+ziIks8LsPR4TiiyzAyEEZoWaOwUZcM/ncL1FrK81nkbe8CSk7oEYRdW1NwE=
