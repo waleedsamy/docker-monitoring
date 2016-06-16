@@ -37,3 +37,13 @@ mongo:
         - "27017"
     volumes:
         - /data/db:/data/db
+cadvisor:
+  container_name: cAdvisor
+  build: ./cAdvisor
+  ports:
+    - "7788:8080"
+  volumes:
+    - "/:/rootfs:ro"
+    - "/var/run:/var/run:rw"
+    - "/sys:/sys:ro"
+    - "/var/lib/docker/:/var/lib/docker:ro"
