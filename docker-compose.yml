@@ -47,3 +47,21 @@ cadvisor:
     - "/var/run:/var/run:rw"
     - "/sys:/sys:ro"
     - "/var/lib/docker/:/var/lib/docker:ro"
+influxdb:
+  container_name: influxdb
+  image: tutum/influxdb:0.12
+  ports:
+    - "8083:8083"
+    - "8086:8086"
+  expose:
+    - "8090"
+    - "8099"
+  environment:
+    PRE_CREATE_DB: wadus
+grafana:
+  container_name: grafana
+  image: grafana/grafana
+  links:
+    - influxdb:influxdb
+  ports:
+    - "3000:3000"
