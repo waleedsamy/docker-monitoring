@@ -47,21 +47,17 @@ cadvisor:
     - "/var/run:/var/run:rw"
     - "/sys:/sys:ro"
     - "/var/lib/docker/:/var/lib/docker:ro"
-influxdb:
-  container_name: influxdb
-  image: tutum/influxdb:0.12
+prometheus:
+  container_name: prometheus
+  build: ./my-prometheus
   ports:
-    - "8083:8083"
-    - "8086:8086"
-  expose:
-    - "8090"
-    - "8099"
-  environment:
-    PRE_CREATE_DB: wadus
+    - "9090:9090"
+  volumes:
+    - /prometheus-data
 grafana:
   container_name: grafana
   image: grafana/grafana
   links:
-    - influxdb:influxdb
+    - prometheus:prometheus
   ports:
     - "3000:3000"
