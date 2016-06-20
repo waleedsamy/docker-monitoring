@@ -1,19 +1,21 @@
 {
-    "name": "node",
-    "version": "1.0.0",
-    "description": "sample Docker workflow with Node.js, Redis, mongo and NGiNX + monitoring (cAdvisor, logstash, prometheus and grafana)",
-    "main": "index.js",
-    "author": "Waleed Samy <waleedsamy634@gmail.com>",
-    "license": "ISC",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/waleedsamy/docker-monitoring.git"
-    },
-    "dependencies": {
-        "express": "^4.12.3",
-        "mocha": "^2.2.1",
-        "mongoose": "^4.2.2",
-        "redis": "^2.6.2",
-        "winston": "^2.2.0"
-    }
+  "name": "node",
+  "version": "1.0.0",
+  "description": "sample Docker workflow with Node.js, Redis, mongo and NGiNX + monitoring (cAdvisor, logstash, prometheus and grafana)",
+  "main": "index.js",
+  "author": "Waleed Samy <waleedsamy634@gmail.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/waleedsamy/docker-monitoring.git"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.12.3",
+    "mocha": "^2.2.1",
+    "mongoose": "^4.2.2",
+    "redis": "^2.6.2",
+    "when": "^3.7.7",
+    "winston": "^1.1.2"
+  }
 }

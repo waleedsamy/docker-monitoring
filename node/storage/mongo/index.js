@@ -1,6 +1,6 @@
 var when = require("when"),
     mongoose = require("mongoose"),
-    animalSchema = require("./models/log"),
+    animalSchema = require("./models/animal"),
     settings, $animal;
 
 /**
@@ -16,6 +16,17 @@ function createAnimals(animals) {
                 return reject(err);
             }
             return resolve(docs.ops);
+        });
+    });
+}
+
+function getAllAnimales() {
+    return when.promise(function(resolve, reject) {
+        $animal.find({}, function(err, logs) {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(logs);
         });
     });
 }
@@ -47,5 +58,6 @@ module.exports = {
             return resolve();
         });
     },
-    create: logRequests,
+    createAnimals: createAnimals,
+    getAllAnimales: getAllAnimales
 };

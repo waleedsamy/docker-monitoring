@@ -1,28 +1,12 @@
-# Set the base image to Ubuntu
-FROM node:0.12.7-wheezy
+FROM node
 
-# File Author / Maintainer
-MAINTAINER Waleed Samy <waleed_samy@ymail.com>
+MAINTAINER Waleed Samy <waleedsamy634@gmail.com>
 
-# Install Node.js and other dependencies
-RUN apt-get update && apt-get -y install curl vim
-
-# Install nodemon
-RUN npm install -g forever grunt-cli bower nodemon
-
-# Provides cached layer for node_modules
-ADD package.json /tmp/package.json
-RUN cd /tmp && npm install
-RUN mkdir -p /src && cp -a /tmp/node_modules /src/
-
-# Define working directory
+RUN mkdir -p /src
 WORKDIR /src
 ADD . /src
+RUN npm install
 
-# Expose port
 EXPOSE  8080
 
-RUN ls -la
-
-# Run app using nodemon
-CMD forever /src/index.js
+CMD ["node", "index.js"]
