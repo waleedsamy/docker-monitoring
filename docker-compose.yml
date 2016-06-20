@@ -37,6 +37,7 @@ mongo:
         - "27017"
     volumes:
         - /data/db:/data/db
+
 cadvisor:
   container_name: cAdvisor
   build: ./cAdvisor
@@ -47,6 +48,13 @@ cadvisor:
     - "/var/run:/var/run:rw"
     - "/sys:/sys:ro"
     - "/var/lib/docker/:/var/lib/docker:ro"
+logstash:
+  image: logstash:latest
+  container_name: logstash
+  command: logstash -f /etc/logstash/conf.d/winston-prometheus.conf
+  volumes:
+    - ./logstash/config:/etc/logstash/conf.d
+    - ./logstash/data:/logstash
 prometheus:
   container_name: prometheus
   build: ./my-prometheus
