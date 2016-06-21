@@ -48,19 +48,28 @@ redis:
     image: redis
     ports:
         - "6379"
+
 logs:
-  container_name: logs
+  container_name: data-container-logs
   image: busybox:latest
   volumes:
     - "/var/log/mointor.log:/var/log/mointor.log:rw"
   entrypoint: /bin/sh
+
+mongoData:
+  container_name: data-container-mongo
+  image: busybox:latest
+  volumes:
+    - /data/db:/data/db
+  entrypoint: /bin/sh
+
 mongo:
     container_name: mongo
     image: mongo
     ports:
         - "27017"
-    volumes:
-        - /data/db:/data/db
+    volumes_from:
+        - mongoData
 
 cadvisor:
   container_name: cAdvisor
@@ -72,6 +81,7 @@ cadvisor:
     - "/var/run:/var/run:rw"
     - "/sys:/sys:ro"
     - "/var/lib/docker/:/var/lib/docker:ro"
+
 logstash:
   image: logstash:latest
   container_name: logstash
@@ -79,13 +89,21 @@ logstash:
   volumes:
     - ./logstash/config:/etc/logstash/conf.d
     - ./logstash/data:/logstash
+
+prometheusData:
+  container_name: data-container-prometheus
+  image: busybox:latest
+  volumes:
+    - "/prometheus-data:/prometheus-data:rw"
+  entrypoint: /bin/sh
 prometheus:
   container_name: prometheus
   build: ./my-prometheus
   ports:
     - "9090:9090"
-  volumes:
-    - /prometheus-data
+  volumes_from:
+    - prometheusData
+
 grafana:
   container_name: grafana
   image: grafana/grafana

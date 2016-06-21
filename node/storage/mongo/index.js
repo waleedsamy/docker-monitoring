@@ -6,16 +6,14 @@ var when = require("when"),
 /**
  * @param request instance of ./models/animal.js
  **/
-function createAnimals(animals) {
+function createAnimal(animalName) {
     return when.promise(function(resolve, reject) {
-        if (!(animals instanceof Array)) {
-            animals = [animals];
-        }
-        $animal.collection.insert(animals, function(err, docs) {
-            if (err) {
-                return reject(err);
-            }
-            return resolve(docs.ops);
+        var _animal = new $animal({
+            name: animalName
+        });
+        _animal.save(function(err, ani) {
+            if (err) return reject(err);
+            else return resolve(ani);
         });
     });
 }
@@ -58,6 +56,6 @@ module.exports = {
             return resolve();
         });
     },
-    createAnimals: createAnimals,
+    createAnimal: createAnimal,
     getAllAnimales: getAllAnimales
 };

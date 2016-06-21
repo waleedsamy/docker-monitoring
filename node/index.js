@@ -5,6 +5,7 @@ var express = require('express'),
     mongoStorage = require("./storage/mongo"),
     redisStrorage = require("./storage/redis"),
     log = require("./log"),
+    api = require("./api/v1"),
     server;
 
 mongoStorage.init(settings).then(function() {
@@ -22,33 +23,9 @@ mongoStorage.init(settings).then(function() {
         extended: true
     }));
 
-    app.get('/', function(req, res, next) {
-        mongoStorage.getAllAnimales().then(function(animals) {
-            log.info("animal fetched correctly");
-            return res.status(200).json(animals);
-        }).otherwise(function(err) {
-            log.error(err.response);
-            return res.status(500).json(err.response);
-        });
-    });
-
-    app.post('/animal', function(req, res, next) {
-        mongoStorage.createAnimals({
-            name: req.body.name
-        }).then(function(animal) {
-            log.info("animal created");
-            redisStrorage.plusOne(animal.name).then(function(count) {
-                log.info("animal count increased");
-                return res.status(200).json(animal);
-            }).otherwise(function(err) {
-                log.error(err.response);
-                return res.status(500).json(err.response);
-            });
-        }).otherwise(function(err) {
-            log.error(err.response);
-            return res.status(500).json(err.response);
-        });
-    });
+    app.get('/', api.getAll);
+    app.get('/animal', api.getAll);
+    app.post('/animal', api.createAnimal);
 
     var getListenPath = function() {
         return "http://" + settings.host + ":" + settings.port;
