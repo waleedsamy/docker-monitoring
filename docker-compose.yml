@@ -3,10 +3,10 @@ nginx:
     build: ./nginx
     links:
         - node1:node1
-        - node2:node2
-        - node3:node3
     ports:
         - "80:80"
+    volumes_from:
+        - logs
 node1:
     container_name: node1
     build: ./node
@@ -19,43 +19,11 @@ node1:
       - logs
     environment:
       - LOG_FILE=/var/log/mointor.log/node.log
-node2:
-    container_name: node2
-    build: ./node
-    links:
-        - redis
-        - mongo
-    ports:
-        - "8080"
-    volumes_from:
-        - logs
-    environment:
-        - LOG_FILE=/var/log/mointor.log/node.log
-node3:
-    container_name: node3
-    build: ./node
-    links:
-        - redis
-        - mongo
-    ports:
-        - "8080"
-    volumes_from:
-        - logs
-    environment:
-        - LOG_FILE=/var/log/mointor.log/node.log
 redis:
     container_name: redis
     image: redis
     ports:
         - "6379"
-
-logs:
-  container_name: data-container-logs
-  image: busybox:latest
-  volumes:
-    - "/var/log/mointor.log:/var/log/mointor.log:rw"
-  entrypoint: /bin/sh
-
 mongoData:
   container_name: data-container-mongo
   image: busybox:latest
@@ -71,6 +39,14 @@ mongo:
     volumes_from:
         - mongoData
 
+logs:
+  container_name: data-container-logs
+  image: busybox:latest
+  volumes:
+    - "/var/log/mointor.log:/var/log/mointor.log:rw"
+    - "/var/log/nginx:/var/log/nginx:rw"
+  entrypoint: /bin/sh
+
 cadvisor:
   container_name: cAdvisor
   build: ./cAdvisor
@@ -82,13 +58,18 @@ cadvisor:
     - "/sys:/sys:ro"
     - "/var/lib/docker/:/var/lib/docker:ro"
 
-logstash:
-  image: logstash:latest
-  container_name: logstash
-  command: logstash -f /etc/logstash/conf.d/winston-prometheus.conf
+logstashData:
+  container_name: data-container-logstash
+  image: busybox:latest
   volumes:
-    - ./logstash/config:/etc/logstash/conf.d
-    - ./logstash/data:/logstash
+    - /logstash/data:/logstash
+  entrypoint: /bin/sh
+logstash:
+  container_name: logstash
+  build: ./logstash
+  volumes_from:
+      - logs
+      - logstashData
 
 prometheusData:
   container_name: data-container-prometheus
