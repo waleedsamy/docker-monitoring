@@ -24,8 +24,10 @@ mongoStorage.init(settings).then(function() {
 
     app.get('/', function(req, res, next) {
         mongoStorage.getAllAnimales().then(function(animals) {
+            log.info("animal fetched correctly");
             return res.status(200).json(animals);
         }).otherwise(function(err) {
+            log.error(err.response);
             return res.status(500).json(err.response);
         });
     });
@@ -34,12 +36,16 @@ mongoStorage.init(settings).then(function() {
         mongoStorage.createAnimals({
             name: req.body.name
         }).then(function(animal) {
+            log.info("animal created");
             redisStrorage.plusOne(animal.name).then(function(count) {
+                log.info("animal count increased");
                 return res.status(200).json(animal);
             }).otherwise(function(err) {
+                log.error(err.response);
                 return res.status(500).json(err.response);
             });
         }).otherwise(function(err) {
+            log.error(err.response);
             return res.status(500).json(err.response);
         });
     });

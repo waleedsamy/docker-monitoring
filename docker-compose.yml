@@ -15,6 +15,10 @@ node1:
         - mongo
     ports:
         - "8080"
+    volumes_from:
+      - logs
+    environment:
+      - LOG_FILE=/var/log/mointor.log/node.log
 node2:
     container_name: node2
     build: ./node
@@ -23,6 +27,10 @@ node2:
         - mongo
     ports:
         - "8080"
+    volumes_from:
+        - logs
+    environment:
+        - LOG_FILE=/var/log/mointor.log/node.log
 node3:
     container_name: node3
     build: ./node
@@ -31,11 +39,21 @@ node3:
         - mongo
     ports:
         - "8080"
+    volumes_from:
+        - logs
+    environment:
+        - LOG_FILE=/var/log/mointor.log/node.log
 redis:
     container_name: redis
     image: redis
     ports:
         - "6379"
+logs:
+  container_name: logs
+  image: busybox:latest
+  volumes:
+    - "/var/log/mointor.log:/var/log/mointor.log:rw"
+  entrypoint: /bin/sh
 mongo:
     container_name: mongo
     image: mongo

@@ -3,7 +3,7 @@ module.exports = {
     host: "127.0.0.1",
     port: "8080",
     log: {
-        file: "/var/log/node/node.log"
+        file: process.env.LOG_FILE
     },
     storage: {
         mongo: {
