@@ -8,17 +8,10 @@ global:
 
 
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
-
-    scrape_interval: 5s
-
-    target_groups:
-      - targets: ['localhost:9090']
 
   - job_name: 'cadvisor'
 
     scrape_interval: 5s
 
     target_groups:
-      - targets: ['192.168.99.100:7788']
+      - targets: ['cadvisor:8080']

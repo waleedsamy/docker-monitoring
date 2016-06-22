@@ -6,4 +6,6 @@ COPY ./patterns /opt/logstash/patterns
 
 RUN chown -R logstash: /opt/logstash/patterns
 
-CMD ["logstash", "-f", "/etc/logstash/conf.d/generator_to_stdout.conf"]
+RUN /opt/logstash/bin/logstash-plugin install logstash-output-influxdb
+
+CMD ["logstash", "-f", "/etc/logstash/conf.d/logs_to_elasticsearch_influxdb.conf"]

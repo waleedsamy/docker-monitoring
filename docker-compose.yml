@@ -30,7 +30,6 @@ mongoData:
   volumes:
     - /data/db:/data/db
   entrypoint: /bin/sh
-
 mongo:
     container_name: mongo
     image: mongo
@@ -52,6 +51,8 @@ cadvisor:
   build: ./cAdvisor
   ports:
     - "7788:8080"
+  expose:
+    - "8080"
   volumes:
     - "/:/rootfs:ro"
     - "/var/run:/var/run:rw"
@@ -67,9 +68,38 @@ logstashData:
 logstash:
   container_name: logstash
   build: ./logstash
+  links:
+    - influxdb:influxdb
+    - elasticsearch:elasticsearch
   volumes_from:
       - logs
       - logstashData
+
+influxdbData:
+  container_name: data-container-influxdb
+  image: busybox:latest
+  volumes:
+    - /influxdb:/data/db
+influxdb:
+  container_name: influxdb
+  image: tutum/influxdb:0.12
+  ports:
+    - "8083:8083"
+    - "8086:8086"
+  expose:
+    - "8090"
+    - "8099"
+  volumes_from:
+    - influxdbData
+  environment:
+    PRE_CREATE_DB: wadus
+
+elasticsearch:
+  container_name: elasticsearch
+  image: elasticsearch
+  ports:
+    - "9200:9200"
+    - "9300:9300"
 
 prometheusData:
   container_name: data-container-prometheus
@@ -82,6 +112,8 @@ prometheus:
   build: ./prometheus
   ports:
     - "9090:9090"
+  links:
+    - cadvisor:cadvisor
   volumes_from:
     - prometheusData
 
@@ -89,6 +121,7 @@ grafana:
   container_name: grafana
   image: grafana/grafana
   links:
-    - prometheus:prometheus
+    - influxdb:influxdb
+    - elasticsearch:elasticsearch
   ports:
     - "3000:3000"
