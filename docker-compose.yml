@@ -79,7 +79,7 @@ prometheusData:
   entrypoint: /bin/sh
 prometheus:
   container_name: prometheus
-  build: ./my-prometheus
+  build: ./prometheus
   ports:
     - "9090:9090"
   volumes_from:
