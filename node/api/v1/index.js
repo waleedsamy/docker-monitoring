@@ -27,5 +27,9 @@ module.exports = {
             log.error(err.response);
             return res.status(500).json(err.response);
         });
+    },
+    killAnimal: function(req, res, next){
+      log.error("killing animals is illegal");
+      return res.status(500).json("killing animals is illegal");
     }
 }

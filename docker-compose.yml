@@ -74,6 +74,9 @@ logstash:
   volumes_from:
       - logs
       - logstashData
+  volumes:
+      - ./logstash/config:/etc/logstash/conf.d
+      - ./logstash/patterns:/etc/logstash/patterns
 
 influxdbData:
   container_name: data-container-influxdb

@@ -4,7 +4,7 @@
 ```
    nginx
           -> node1 -->                        | ->  elasticsearch ->|
-          -> node2 --> mongo + redis + logstash  ->                 |----------- 
+          -> node2 --> mongo + redis + logstash  ->                 |-----------
           -> node3 -->                        | -> influxdb ------- |           | -> grafana   
    cAdvisor ------------------------------------->  prometheus -----------------
 ```

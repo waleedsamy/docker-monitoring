@@ -26,6 +26,7 @@ mongoStorage.init(settings).then(function() {
     app.get('/', api.getAll);
     app.get('/animal', api.getAll);
     app.post('/animal', api.createAnimal);
+    app.get('/animal/kill', api.killAnimal);
 
     var getListenPath = function() {
         return "http://" + settings.host + ":" + settings.port;
