@@ -71,6 +71,7 @@ logstash:
   links:
     - influxdb:influxdb
     - elasticsearch:elasticsearch
+    - prometheusPushGateway:prometheusPushGateway
   volumes_from:
       - logs
       - logstashData
@@ -110,6 +111,11 @@ prometheusData:
   volumes:
     - "/prometheus-data:/prometheus-data:rw"
   entrypoint: /bin/sh
+prometheusPushGateway:
+  container_name: prometheus-push-gateway
+  image: prom/pushgateway
+  ports:
+    - "9091:9091"
 prometheus:
   container_name: prometheus
   build: ./prometheus
@@ -117,14 +123,16 @@ prometheus:
     - "9090:9090"
   links:
     - cadvisor:cadvisor
+    - prometheusPushGateway:prometheusPushGateway
   volumes_from:
     - prometheusData
 
 grafana:
   container_name: grafana
-  image: grafana/grafana
+  build: ./grafana
   links:
     - influxdb:influxdb
     - elasticsearch:elasticsearch
+    - prometheus:prometheus
   ports:
     - "3000:3000"

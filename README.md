@@ -9,5 +9,11 @@
    cAdvisor ------------------------------------->  prometheus -----------------
 ```
 
+* prometheus pushgateway
+ ```bash
+  DATA="some_metric{label=\"val1\"} 349^J"
+  curl -i -X POST http://prometheusPushGateway:9091/metrics/job/api-server/ --data "${DATA}"
+ ```
+
 # resources:
  * http://blog.couchbase.com/2016/april/monitoring-docker-containers-docker-stats-cadvisor-universal-control-plane
