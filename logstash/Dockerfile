@@ -8,4 +8,4 @@ FROM logstash:latest
 
 RUN /opt/logstash/bin/logstash-plugin install logstash-output-influxdb
 
-CMD ["logstash", "-f", "/etc/logstash/conf.d/logs_to_influxdb.conf", "--auto-reload"]
+CMD ["logstash", "-f", "/etc/logstash/conf.d/logs_to_prometheus.conf", "--auto-reload"]
