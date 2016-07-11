@@ -1,1 +1,3 @@
-NGINX_ACCESS %{IPORHOST:remote_addr} - %{USERNAME:remote_user} \[%{HTTPDATE:time_local}\] %{QS:request} %{INT:status} %{INT:body_bytes_sent} %{QS:http_referer} %{QS:http_user_agent}
+BRACES \[(.*?)\]
+VERSION \d+.\d+.\d+
+NGINX_ACCESS %{HTTPDATE:time}%{SPACE}%{IPORHOST:remote_addr} (?:%{WORD:http_method} %{URIPATHPARAM:request_url}(?: HTTP/%{NUMBER:http_version})?|-) %{NUMBER:request_length} %{INT:status} %{INT:bytes_sent} %{INT:body_bytes_sent} %{NOTSPACE:http_referer} %{BRACES:http_user_agent} %{BRACES:upstream_addr} %{BRACES:upstream_status} %{BRACES:upstream_connect_time} %{BRACES:upstream_response_length} %{BRACES:request_time} %{BRACES:upstream_response_time} %{BRACES:upstream_header_time} %{VERSION:nginx_version}

@@ -28,7 +28,7 @@ mongoData:
   container_name: data-container-mongo
   image: busybox:latest
   volumes:
-    - /data/db:/data/db
+    - ./data/mongo:/data/db
   entrypoint: /bin/sh
 mongo:
     container_name: mongo
@@ -63,7 +63,7 @@ logstashData:
   container_name: data-container-logstash
   image: busybox:latest
   volumes:
-    - /logstash/data:/logstash
+    - ./data/logstash:/logstash
   entrypoint: /bin/sh
 logstash:
   container_name: logstash
@@ -83,7 +83,7 @@ influxdbData:
   container_name: data-container-influxdb
   image: busybox:latest
   volumes:
-    - /influxdb:/data/db
+    - ./data/influxdb:/data/db
 influxdb:
   container_name: influxdb
   image: tutum/influxdb:0.12
@@ -109,7 +109,7 @@ prometheusData:
   container_name: data-container-prometheus
   image: busybox:latest
   volumes:
-    - "/prometheus-data:/prometheus-data:rw"
+    - "/data/prometheus:/prometheus-data:rw"
   entrypoint: /bin/sh
 prometheusPushGateway:
   container_name: prometheus-push-gateway
