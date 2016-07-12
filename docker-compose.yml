@@ -114,7 +114,6 @@ grafana:
   container_name: grafana
   build: ./grafana
   links:
-    - influxdb:influxdb
     - elasticsearch:elasticsearch
     - prometheus:prometheus
   ports:
