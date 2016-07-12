@@ -15,5 +15,10 @@
   curl -i -X POST http://prometheusPushGateway:9091/metrics/job/api-server/ --data "${DATA}"
  ```
 
+* run container example
+```bash
+  docker run -it --volumes-from data-container-logs --link mongo --link redis dockermonitoring_node1 /bin/bash
+```
+
 # resources:
  * http://blog.couchbase.com/2016/april/monitoring-docker-containers-docker-stats-cadvisor-universal-control-plane

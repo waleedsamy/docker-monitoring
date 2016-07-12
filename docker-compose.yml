@@ -7,6 +7,7 @@ nginx:
         - "80:80"
     volumes_from:
         - logs
+
 node1:
     container_name: node1
     build: ./node
@@ -18,12 +19,14 @@ node1:
     volumes_from:
       - logs
     environment:
-      - LOG_FILE=/var/log/mointor.log/node.log
+      - LOG_FILE=/var/log/node/node1.log
+
 redis:
     container_name: redis
     image: redis
     ports:
         - "6379"
+
 mongoData:
   container_name: data-container-mongo
   image: busybox:latest
@@ -42,8 +45,8 @@ logs:
   container_name: data-container-logs
   image: busybox:latest
   volumes:
-    - "/var/log/mointor.log:/var/log/mointor.log:rw"
-    - "/var/log/nginx:/var/log/nginx:rw"
+    - "./data/logs/:/var/log/:rw"
+    - "./data/logs/nginx/:/var/log/nginx/:rw"
   entrypoint: /bin/sh
 
 cadvisor:
@@ -69,7 +72,6 @@ logstash:
   container_name: logstash
   build: ./logstash
   links:
-    - influxdb:influxdb
     - elasticsearch:elasticsearch
     - prometheusPushGateway:prometheusPushGateway
   volumes_from:
@@ -78,25 +80,6 @@ logstash:
   volumes:
       - ./logstash/config:/etc/logstash/conf.d
       - ./logstash/patterns:/etc/logstash/patterns
-
-influxdbData:
-  container_name: data-container-influxdb
-  image: busybox:latest
-  volumes:
-    - ./data/influxdb:/data/db
-influxdb:
-  container_name: influxdb
-  image: tutum/influxdb:0.12
-  ports:
-    - "8083:8083"
-    - "8086:8086"
-  expose:
-    - "8090"
-    - "8099"
-  volumes_from:
-    - influxdbData
-  environment:
-    PRE_CREATE_DB: wadus
 
 elasticsearch:
   container_name: elasticsearch
