@@ -62,24 +62,11 @@ cadvisor:
     - "/sys:/sys:ro"
     - "/var/lib/docker/:/var/lib/docker:ro"
 
-logstashData:
-  container_name: data-container-logstash
-  image: busybox:latest
-  volumes:
-    - ./data/logstash:/logstash
-  entrypoint: /bin/sh
-logstash:
-  container_name: logstash
-  build: ./logstash
-  links:
-    - elasticsearch:elasticsearch
-    - prometheusPushGateway:prometheusPushGateway
+fluentd:
+  container_name: fluentd
+  build: ./fluentd
   volumes_from:
       - logs
-      - logstashData
-  volumes:
-      - ./logstash/config:/etc/logstash/conf.d
-      - ./logstash/patterns:/etc/logstash/patterns
 
 elasticsearch:
   container_name: elasticsearch
@@ -109,12 +96,3 @@ prometheus:
     - prometheusPushGateway:prometheusPushGateway
   volumes_from:
     - prometheusData
-
-grafana:
-  container_name: grafana
-  build: ./grafana
-  links:
-    - elasticsearch:elasticsearch
-    - prometheus:prometheus
-  ports:
-    - "3000:3000"
