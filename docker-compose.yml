@@ -67,6 +67,8 @@ fluentd:
   build: ./fluentd
   volumes_from:
       - logs
+  links:
+    - elasticsearch
 
 elasticsearch:
   container_name: elasticsearch
@@ -81,11 +83,6 @@ prometheusData:
   volumes:
     - "/data/prometheus:/prometheus-data:rw"
   entrypoint: /bin/sh
-prometheusPushGateway:
-  container_name: prometheus-push-gateway
-  image: prom/pushgateway
-  ports:
-    - "9091:9091"
 prometheus:
   container_name: prometheus
   build: ./prometheus
@@ -93,6 +90,5 @@ prometheus:
     - "9090:9090"
   links:
     - cadvisor:cadvisor
-    - prometheusPushGateway:prometheusPushGateway
   volumes_from:
     - prometheusData
