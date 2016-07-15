@@ -69,13 +69,23 @@ fluentd:
       - logs
   links:
     - elasticsearch
+  ports:
+    - "24231:24231"
 
+elasticsearchData:
+  container_name: data-container-elasticsearch
+  image: busybox:latest
+  volumes:
+    - ./data/:/usr/share/elasticsearch/data
+  entrypoint: /bin/sh
 elasticsearch:
   container_name: elasticsearch
   image: elasticsearch
   ports:
     - "9200:9200"
     - "9300:9300"
+  volumes_from:
+    - elasticsearchData
 
 prometheusData:
   container_name: data-container-prometheus
@@ -92,3 +102,12 @@ prometheus:
     - cadvisor:cadvisor
   volumes_from:
     - prometheusData
+
+grafana:
+  container_name: grafana
+  build: ./grafana
+  links:
+    - elasticsearch:elasticsearch
+    - prometheus:prometheus
+  ports:
+    - "3000:3000"
