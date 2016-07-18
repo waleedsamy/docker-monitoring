@@ -1,2 +1,0 @@
-VERSION \d+.\d+.\d+
-NGINX_ACCESS %{HTTPDATE:time}%{SPACE}%{IPORHOST:remote_addr} (?:%{WORD:http_method} %{URIPATHPARAM:request_url}(?: HTTP/%{NUMBER:http_version})?|-) %{NUMBER:request_length} %{INT:status} %{INT:bytes_sent} %{INT:body_bytes_sent} %{NOTSPACE:http_referer} %{QS:http_user_agent} %{QS:upstream_addr} %{QS:upstream_status} %{QS:upstream_connect_time} %{QS:upstream_response_length} %{QS:request_time} %{QS:upstream_response_time} %{QS:upstream_header_time} %{VERSION:nginx_version}

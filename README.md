@@ -3,17 +3,16 @@
 * full picture
 ```
    nginx
-          -> node1 -->                        | ->  elasticsearch ->|
-          -> node2 --> mongo + redis + logstash  ->                 |-----------
-          -> node3 -->                        | -> influxdb ------- |           | -> grafana   
-   cAdvisor ------------------------------------->  prometheus -----------------
+          -> node1 -->                        | ->  elasticsearch --->|
+          -> node2 --> mongo + redis + fluentd  ->                    |-------> grafana
+          -> node3 -->                          -> prometheus ------->|
+                                                  |
+   cAdvisor -------------------------------------^
 ```
 
-* prometheus pushgateway
- ```bash
-  DATA="some_metric{label=\"val1\"} 349^J"
-  curl -i -X POST http://prometheusPushGateway:9091/metrics/job/api-server/ --data "${DATA}"
- ```
+* fluentd
+ * replace logstash cause fluentd has a very good plugin for prometheus
+ * no need for prometheus push gateway anymore
 
 * run container example
 ```bash
