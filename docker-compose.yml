@@ -3,6 +3,7 @@ nginx:
     build: ./nginx
     links:
         - node1:node1
+        - node2:node2
     ports:
         - "80:80"
     volumes_from:
@@ -20,6 +21,18 @@ node1:
       - logs
     environment:
       - LOG_FILE=/var/log/node/node1.log
+node2:
+    container_name: node2
+    build: ./node
+    links:
+        - redis
+        - mongo
+    ports:
+        - "8081:8080"
+    volumes_from:
+      - logs
+    environment:
+      - LOG_FILE=/var/log/node/node2.log
 
 redis:
     container_name: redis
