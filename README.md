@@ -37,5 +37,8 @@ echo 18/Jul/2016:17:53:32 +0000 172.17.0.1 GET /animal HTTP/1.1 103 200 229 2 - 
 
 ```
 
+* cadvisor
+ * no need to provide authentication, cause it will be linked to another containers only.
+
 # resources:
  * http://blog.couchbase.com/2016/april/monitoring-docker-containers-docker-stats-cadvisor-universal-control-plane

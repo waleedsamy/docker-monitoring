@@ -64,7 +64,7 @@ logs:
 
 cadvisor:
   container_name: cAdvisor
-  build: ./cAdvisor
+  image: google/cadvisor:latest
   ports:
     - "7788:8080"
   expose:
@@ -82,6 +82,8 @@ fluentd:
     - logs
   links:
     - elasticsearch
+  ports:
+    - "24231:24231"
   expose:
     - "24284"
     - "24231"
@@ -101,12 +103,6 @@ elasticsearch:
   volumes_from:
     - elasticsearchData
 
-prometheusData:
-  container_name: data-container-prometheus
-  image: busybox:latest
-  volumes:
-    - "/data/prometheus:/prometheus-data:rw"
-  entrypoint: /bin/sh
 prometheus:
   container_name: prometheus
   build: ./prometheus
@@ -115,8 +111,6 @@ prometheus:
   links:
     - cadvisor:cadvisor
     - fluentd:fluentd
-  volumes_from:
-    - prometheusData
 
 grafana:
   container_name: grafana
