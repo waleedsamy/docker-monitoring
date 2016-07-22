@@ -117,11 +117,19 @@ prometheus:
     - cadvisor:cadvisor
     - fluentd:fluentd
 
+grafanaData:
+  container_name: data-container-grafana
+  image: busybox:latest
+  volumes:
+    - "./grafana/conf/:/var/lib/grafana"
+  entrypoint: /bin/sh
 grafana:
   container_name: grafana
-  build: ./grafana
+  image: grafana/grafana:3.1.0
   links:
     - elasticsearch:elasticsearch
     - prometheus:prometheus
   ports:
     - "10099:3000"
+  volumes_from:
+    - grafanaData

@@ -4,3 +4,4 @@ node/node_modules
 
 node/npm-debug.log
 data/
+grafana/conf/sessions
