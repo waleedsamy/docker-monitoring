@@ -66,7 +66,7 @@ cadvisor:
   container_name: cAdvisor
   image: google/cadvisor:latest
   ports:
-    - "7788:8080"
+    - "10011:8080"
   expose:
     - "8080"
   volumes:
@@ -83,7 +83,7 @@ fluentd:
   links:
     - elasticsearch
   ports:
-    - "24231:24231"
+    - "10022:24231"
   expose:
     - "24284"
     - "24231"
@@ -100,6 +100,9 @@ elasticsearch:
   ports:
     - "9200:9200"
     - "9300:9300"
+  expose:
+    - "9200"
+    - "9300"
   volumes_from:
     - elasticsearchData
 
@@ -107,7 +110,9 @@ prometheus:
   container_name: prometheus
   build: ./prometheus
   ports:
-    - "9090:9090"
+    - "10033:9090"
+  expose:
+    - "9090"
   links:
     - cadvisor:cadvisor
     - fluentd:fluentd
@@ -119,4 +124,4 @@ grafana:
     - elasticsearch:elasticsearch
     - prometheus:prometheus
   ports:
-    - "3000:3000"
+    - "10099:3000"

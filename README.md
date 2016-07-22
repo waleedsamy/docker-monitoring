@@ -40,5 +40,13 @@ echo 18/Jul/2016:17:53:32 +0000 172.17.0.1 GET /animal HTTP/1.1 103 200 229 2 - 
 * cadvisor
  * no need to provide authentication, cause it will be linked to another containers only.
 
+
+* services
+ * api -> `http://127.0.0.1`
+ * cadvisor -> `http://127.0.0.1:10011/metrics`
+ * fluentd-prometheus -> `http://localhost:10022/metrics`
+ * prometheus -> `http://127.0.0.1:10033/metrics`
+ * grafana dashboard -> `http://127.0.0.1:10099`
+
 # resources:
  * http://blog.couchbase.com/2016/april/monitoring-docker-containers-docker-stats-cadvisor-universal-control-plane
