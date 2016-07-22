@@ -79,11 +79,12 @@ fluentd:
   container_name: fluentd
   build: ./fluentd
   volumes_from:
-      - logs
+    - logs
   links:
     - elasticsearch
-  ports:
-    - "24231:24231"
+  expose:
+    - "24284"
+    - "24231"
 
 elasticsearchData:
   container_name: data-container-elasticsearch
@@ -113,6 +114,7 @@ prometheus:
     - "9090:9090"
   links:
     - cadvisor:cadvisor
+    - fluentd:fluentd
   volumes_from:
     - prometheusData
 
