@@ -53,3 +53,11 @@ mongo:
         - "27017"
     volumes_from:
         - mongoData
+
+logs:
+  container_name: data-container-logs
+  image: busybox:latest
+  volumes:
+    - "./data/logs/:/var/log/:rw"
+    - "./data/logs/nginx/:/var/log/nginx/:rw"
+  entrypoint: /bin/sh
