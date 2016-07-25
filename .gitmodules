@@ -1,0 +1,12 @@
+[submodule "grafana"]
+	path = grafana
+	url = git@gitserver.office.traffics-switch.de:traffics/grafana.git
+[submodule "fluentd"]
+	path = fluentd
+	url = git@gitserver.office.traffics-switch.de:traffics/fluentd.git
+[submodule "prometheus"]
+	path = prometheus
+	url = git@gitserver.office.traffics-switch.de:traffics/prometheus.git
+[submodule "elasticsearch"]
+	path = elasticsearch
+	url = git@gitserver.office.traffics-switch.de:traffics/elasticsearch.git
