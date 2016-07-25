@@ -13,12 +13,16 @@ scrape_configs:
 
     scrape_interval: 1s
 
-    target_groups:
+    static_configs:
       - targets: ['cadvisor:8080']
+        labels:
+          target:   cadvisor
 
   - job_name: 'fluentd'
 
     scrape_interval: 1s
 
-    target_groups:
+    static_configs:
       - targets: ['fluentd:24231']
+        labels:
+          target:   fluentd

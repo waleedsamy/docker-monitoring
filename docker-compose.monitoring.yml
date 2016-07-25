@@ -1,0 +1,79 @@
+logs:
+  container_name: data-container-logs
+  image: busybox:latest
+  volumes:
+    - "./data/logs/:/var/log/:rw"
+    - "./data/logs/nginx/:/var/log/nginx/:rw"
+  entrypoint: /bin/sh
+
+cadvisor:
+  container_name: cAdvisor
+  image: google/cadvisor:latest
+  ports:
+    - "10011:8080"
+  expose:
+    - "8080"
+  volumes:
+    - "/:/rootfs:ro"
+    - "/var/run:/var/run:rw"
+    - "/sys:/sys:ro"
+    - "/var/lib/docker/:/var/lib/docker:ro"
+
+fluentd:
+  container_name: fluentd
+  build: ./fluentd
+  volumes_from:
+    - logs
+  links:
+    - elasticsearch
+  ports:
+    - "10022:24231"
+  expose:
+    - "24284"
+    - "24231"
+
+elasticsearchData:
+  container_name: data-container-elasticsearch
+  image: busybox:latest
+  volumes:
+    - ./data/:/usr/share/elasticsearch/data
+  entrypoint: /bin/sh
+elasticsearch:
+  container_name: elasticsearch
+  image: elasticsearch
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+  expose:
+    - "9200"
+    - "9300"
+  volumes_from:
+    - elasticsearchData
+
+prometheus:
+  container_name: prometheus
+  build: ./prometheus
+  ports:
+    - "10033:9090"
+  expose:
+    - "9090"
+  links:
+    - cadvisor:cadvisor
+    - fluentd:fluentd
+
+grafanaData:
+  container_name: data-container-grafana
+  image: busybox:latest
+  volumes:
+    - "./grafana/conf/:/var/lib/grafana"
+  entrypoint: /bin/sh
+grafana:
+  container_name: grafana
+  image: grafana/grafana:3.1.0
+  links:
+    - elasticsearch:elasticsearch
+    - prometheus:prometheus
+  ports:
+    - "10099:3000"
+  volumes_from:
+    - grafanaData

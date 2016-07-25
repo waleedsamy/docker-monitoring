@@ -9,6 +9,12 @@
                                                   |
    cAdvisor -------------------------------------^
 ```
+* run
+ * docker-compose for monitoring
+  ```bash
+  # remove data because there are some permissions conflicts in mongo volume and mac
+  rm -rf data && docker-compose -f docker-compose.yml -f docker-compose.monitoring.yml up --build
+  ```
 
 * fluentd
  * replace logstash cause fluentd has a very good plugin for prometheus
