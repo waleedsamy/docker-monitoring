@@ -1,0 +1,68 @@
+cadvisor:
+  container_name: cAdvisor
+  image: google/cadvisor:latest
+  ports:
+    - "10011:8080"
+  expose:
+    - "8080"
+  volumes:
+    - "/:/rootfs:ro"
+    - "/var/run:/var/run:rw"
+    - "/sys:/sys:ro"
+    - "/var/lib/docker/:/var/lib/docker:ro"
+
+fluentd:
+  container_name: fluentd
+  image: nexus.office.traffics-switch.de:9223/fluentd
+  volumes_from:
+    - logs
+  links:
+    - elasticsearch
+  ports:
+    - "10022:24231"
+  expose:
+    - "24284"
+    - "24231"
+
+elasticsearch_data:
+  container_name: data-container-elasticsearch
+  image: busybox:latest
+  volumes:
+    - "/usr/share/elasticsearch/data"
+  entrypoint: /bin/sh
+elasticsearch:
+  container_name: elasticsearch
+  image: elasticsearch
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+  expose:
+    - "9200"
+    - "9300"
+  volumes_from:
+    - elasticsearch_data
+
+prometheus:
+  container_name: prometheus
+  image: nexus.office.traffics-switch.de:9223/prometheus
+  ports:
+    - "10033:9090"
+  expose:
+    - "9090"
+  links:
+    - cadvisor:cadvisor
+    - fluentd:fluentd
+
+grafana_data:
+  container_name: data-container-grafana
+  image: nexus.office.traffics-switch.de:9223/grafana
+grafana:
+  container_name: grafana
+  image: grafana/grafana:3.1.0
+  links:
+    - elasticsearch:elasticsearch
+    - prometheus:prometheus
+  ports:
+    - "10099:3000"
+  volumes_from:
+    - grafana_data
