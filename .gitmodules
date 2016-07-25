@@ -1,0 +1,6 @@
+[submodule "grafana"]
+	path = grafana
+	url = git@gitserver.office.traffics-switch.de:traffics/grafana.git
+[submodule "fluentd"]
+	path = fluentd
+	url = git@gitserver.office.traffics-switch.de:traffics/fluentd.git
