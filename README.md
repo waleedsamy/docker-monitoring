@@ -1,4 +1,4 @@
-# A sample Docker workflow with Node.js, Redis, mongo and NGiNX + monitoring (cAdvisor, logstash, prometheus and grafana)
+# A sample Docker workflow with Node.js, Redis, mongo and NGiNX + monitoring (cAdvisor, fluentd, elasticsearch, prometheus and grafana)
 
 * full picture
 ```
@@ -52,6 +52,7 @@ echo 18/Jul/2016:17:53:32 +0000 172.17.0.1 GET /animal HTTP/1.1 103 200 229 2 - 
  * cadvisor -> `http://127.0.0.1:10011/metrics`
  * fluentd-prometheus -> `http://localhost:10022/metrics`
  * prometheus -> `http://127.0.0.1:10033/metrics`
+ * elasticsearch -> `http://127.0.0.1:10044/_plugin/hq/#documents`
  * grafana dashboard -> `http://127.0.0.1:10099`
 
 # resources:

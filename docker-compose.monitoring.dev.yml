@@ -32,10 +32,9 @@ elasticsearch_data:
   entrypoint: /bin/sh
 elasticsearch:
   container_name: elasticsearch
-  image: elasticsearch
+  build: ./elasticsearch
   ports:
-    - "9200:9200"
-    - "9300:9300"
+    - "10044:9200"
   expose:
     - "9200"
     - "9300"

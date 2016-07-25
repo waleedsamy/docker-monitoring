@@ -7,3 +7,6 @@
 [submodule "prometheus"]
 	path = prometheus
 	url = git@gitserver.office.traffics-switch.de:traffics/prometheus.git
+[submodule "elasticsearch"]
+	path = elasticsearch
+	url = git@gitserver.office.traffics-switch.de:traffics/elasticsearch.git
