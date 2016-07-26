@@ -54,7 +54,10 @@ prometheus:
 
 grafana_data:
   container_name: data-container-grafana
-  build: ./grafana
+  image: busybox:latest
+  volumes:
+    - "./grafana/conf/:/var/lib/grafana"
+  entrypoint: /bin/sh
 grafana:
   container_name: grafana
   image: grafana/grafana:3.1.0
