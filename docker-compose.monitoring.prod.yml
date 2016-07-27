@@ -29,7 +29,6 @@ elasticsearch_data:
   image: busybox:latest
   volumes:
     - "/usr/share/elasticsearch/data"
-  entrypoint: /bin/sh
 elasticsearch:
   container_name: elasticsearch
   image: nexus.office.traffics-switch.de:9223/elasticsearch
@@ -41,6 +40,11 @@ elasticsearch:
   volumes_from:
     - elasticsearch_data
 
+prometheus_date:
+  container_name: data-container-prometheus
+  image: busybox:latest
+  volumes:
+    - /prometheus:/prometheus
 prometheus:
   container_name: prometheus
   image: nexus.office.traffics-switch.de:9223/prometheus
@@ -51,6 +55,8 @@ prometheus:
   links:
     - cadvisor:cadvisor
     - fluentd:fluentd
+  volumes_from:
+    - prometheus_date
 
 grafana_data:
   container_name: data-container-grafana

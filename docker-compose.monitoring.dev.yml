@@ -29,7 +29,6 @@ elasticsearch_data:
   image: busybox:latest
   volumes:
     - ./data/:/usr/share/elasticsearch/data
-  entrypoint: /bin/sh
 elasticsearch:
   container_name: elasticsearch
   build: ./elasticsearch
@@ -41,6 +40,11 @@ elasticsearch:
   volumes_from:
     - elasticsearch_data
 
+prometheus_date:
+  container_name: data-container-prometheus
+  image: busybox:latest
+  volumes:
+    - ./data/prometheus:/prometheus
 prometheus:
   container_name: prometheus
   build: ./prometheus
@@ -51,13 +55,14 @@ prometheus:
   links:
     - cadvisor:cadvisor
     - fluentd:fluentd
+  volumes_from:
+    - prometheus_date
 
 grafana_data:
   container_name: data-container-grafana
   image: busybox:latest
   volumes:
     - "./grafana/conf/:/var/lib/grafana"
-  entrypoint: /bin/sh
 grafana:
   container_name: grafana
   image: grafana/grafana:3.1.0
