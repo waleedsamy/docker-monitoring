@@ -20,7 +20,7 @@ node1:
     volumes_from:
       - logs
     environment:
-      - LOG_FILE=/var/log/node/node1.log
+      - LOG_FILE=/var/log/traffics/node/node1.log
 node2:
     container_name: node2
     build: ./node
@@ -32,7 +32,7 @@ node2:
     volumes_from:
       - logs
     environment:
-      - LOG_FILE=/var/log/node/node2.log
+      - LOG_FILE=/var/log/traffics/node/node2.log
 
 redis:
     container_name: redis
@@ -53,11 +53,3 @@ mongo:
         - "27017"
     volumes_from:
         - mongoData
-
-logs:
-  container_name: data-container-logs
-  image: busybox:latest
-  volumes:
-    - "./data/logs/:/var/log/:rw"
-    - "./data/logs/nginx/:/var/log/nginx/:rw"
-  entrypoint: /bin/sh

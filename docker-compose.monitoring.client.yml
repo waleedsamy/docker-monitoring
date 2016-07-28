@@ -1,0 +1,47 @@
+logs:
+  container_name: data-container-logs
+  image: busybox:latest
+  volumes:
+    - "./data/log/:/var/log/:rw"
+    - "./data/log/nginx/:/var/log/nginx/:rw"
+    - "./data/log/td-agent/:/var/log/td-agent/:rw"
+  entrypoint: /bin/sh
+
+cadvisor:
+  container_name: cAdvisor
+  image: google/cadvisor:latest
+  ports:
+    - "10011:8080"
+  expose:
+    - "8080"
+  volumes:
+    - "/:/rootfs:ro"
+    - "/var/run:/var/run:rw"
+    - "/sys:/sys:ro"
+    - "/var/lib/docker/:/var/lib/docker:ro"
+
+fluentd_nginx_forwarder:
+  container_name: fluentd_nginx_forwarder
+  build: ./fluentd-nginx-forwarder
+  volumes_from:
+    - logs
+  links:
+    - fluentd:fluentd
+  ports:
+    - "10055:24231"
+  expose:
+    - "24284"
+    - "24231"
+
+fluentd_app_nodejs_forwarder:
+  container_name: fluentd-app-nodejs-forwarder
+  build: ./fluentd-app-nodejs-forwarder
+  volumes_from:
+    - logs
+  links:
+    - fluentd:fluentd
+  ports:
+    - "10077:24231"
+  expose:
+    - "24284"
+    - "24231"

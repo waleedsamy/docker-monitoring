@@ -14,6 +14,7 @@
   ```bash
   # remove data because there are some permissions conflicts in mongo volume and mac
   rm -rf data && docker-compose -f docker-compose.yml -f docker-compose.monitoring.dev.yml up --build
+  docker-compose -f docker-compose.yml -f docker-compose.monitoring.client.yml -f docker-compose.monitoring.processor.yml -f docker-compose.monitoring.dashboard.yml up --build
   ```
 
 * fluentd

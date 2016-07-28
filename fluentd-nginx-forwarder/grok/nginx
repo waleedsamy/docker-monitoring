@@ -1,0 +1,4 @@
+VERSION \d+.\d+.\d+
+NGINX_HTTPDATE (\d{1,2}/\w{3}/[2][0]\d{2}:\d{2}:\d{2}:\d{2}\s[+][0]{4})
+MY_QS \[(.*?)\]
+NGINX_ACCESS \[%{HTTPDATE:request_date}\] %{IPORHOST:remote_addr} "%{WORD:http_method} %{URIPATHPARAM:request_url} HTTP/%{NUMBER:http_version}" %{NUMBER:request_length} %{INT:status} %{INT:bytes_sent} %{INT:body_bytes_sent} %{NOTSPACE:http_referer} %{QS:agent} %{MY_QS:upstream_addr} %{MY_QS:upstream_status} %{MY_QS:upstream_connect_time} %{MY_QS:upstream_response_length} %{BASE10NUM:request_time} %{MY_QS:upstream_response_time} %{MY_QS:upstream_header_time} %{VERSION:nginx_version}

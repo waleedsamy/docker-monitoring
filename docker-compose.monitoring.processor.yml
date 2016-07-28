@@ -1,0 +1,48 @@
+fluentd:
+  container_name: fluentd
+  build: ./fluentd
+  volumes_from:
+    - logs
+  links:
+    - elasticsearch
+  ports:
+    - "10066:24224"
+    - "10022:24231"
+  expose:
+    - "24224"
+    - "24284"
+    - "24231"
+
+prometheus_date:
+  container_name: data-container-prometheus
+  image: busybox:latest
+  volumes:
+    - ./data/prometheus:/prometheus
+prometheus:
+  container_name: prometheus
+  build: ./prometheus
+  ports:
+    - "10033:9090"
+  expose:
+    - "9090"
+  links:
+    - cadvisor:cadvisor
+    - fluentd:fluentd
+  volumes_from:
+    - prometheus_date
+
+elasticsearch_data:
+  container_name: data-container-elasticsearch
+  image: busybox:latest
+  volumes:
+    - ./data/:/usr/share/elasticsearch/data
+elasticsearch:
+  container_name: elasticsearch
+  build: ./elasticsearch
+  ports:
+    - "10044:9200"
+  expose:
+    - "9200"
+    - "9300"
+  volumes_from:
+    - elasticsearch_data
