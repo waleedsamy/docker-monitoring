@@ -10,3 +10,9 @@
 [submodule "elasticsearch"]
 	path = elasticsearch
 	url = git@gitserver.office.traffics-switch.de:traffics/elasticsearch.git
+[submodule "fluentd-app-nodejs-forwarder"]
+	path = fluentd-app-nodejs-forwarder
+	url = git@gitserver.office.traffics-switch.de:traffics/fluentd-app-nodejs-forwarder.git
+[submodule "fluentd-nginx-forwarder"]
+	path = fluentd-nginx-forwarder
+	url = git@gitserver.office.traffics-switch.de:traffics/fluentd-nginx-forwarder.git
